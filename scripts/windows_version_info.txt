@@ -1,0 +1,17 @@
+# UTF-8 Windows version resource for PyInstaller.
+VSVersionInfo(
+  ffi=FixedFileInfo(filevers=(2, 2, 2, 0), prodvers=(2, 2, 2, 0)),
+  kids=[
+    StringFileInfo([
+      StringTable('080404b0', [
+        StringStruct('FileDescription', '答辩速查 2.2.2 · 现场答辩辅助'),
+        StringStruct('FileVersion', '2.2.2'),
+        StringStruct('ProductName', '答辩速查'),
+        StringStruct('ProductVersion', '2.2.2'),
+        StringStruct('InternalName', 'DefenseDesk'),
+        StringStruct('OriginalFilename', '答辩速查.exe')
+      ])
+    ]),
+    VarFileInfo([VarStruct('Translation', [2052, 1200])])
+  ]
+)

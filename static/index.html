@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#214d41">
+  <title>答辩速查 2.2.2 · 现场答辩辅助</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='13' fill='%23214d41'/%3E%3Cpath d='M13 13h22v17H22l-9 7z' fill='none' stroke='white' stroke-width='3'/%3E%3Cpath d='M19 20h10M19 25h7' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/styles.css?v=2.2.2">
+  <link rel="stylesheet" href="/static/conversation.css?v=2.2.2">
+  <script src="/static/voice.js?v=2.2.2" defer></script>
+  <script src="/static/defense-renderer.js?v=2.2.2" defer></script>
+  <script src="/static/conversation.js?v=2.2.2" defer></script>
+  <script src="/static/generation.js?v=2.0.0-model-picker" defer></script>
+  <script src="/static/app.js?v=2.2.2" defer></script>
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4h16v12H10l-6 4V4Z"/><path d="M8 8h8M8 12h5"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8l-5-5Z"/><path d="M14 3v5h5M8 12h8M8 16h6"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h7l2 3h9v12H3V7Z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.8 6.4.9-4.6 4.5 1.1 6.3-5.7-3-5.7 3 1.1-6.3L2.8 9.7l6.4-.9L12 3Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v6h16v-6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v13m-5-5 5 5 5-5M4 15v6h16v-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="m15 4 5 5M4 20l5-1L21 7l-5-5L4 14v6Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 8V3H3v13h5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 3h7v7M21 3 11 13M10 5H4v15h15v-6"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5c-3-2-6-2-10-1v15c4-1 7-1 10 1 3-2 6-2 10-1V4c-4-1-7-1-10 1Zm0 0v15"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m6 0h6v-6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9S4 17 4 12V6l8-3Z"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m8 5 7 7-7 7"/></symbol>
+  </defs></svg>
+
+  <aside class="sidebar" id="mainSidebar">
+    <a class="brand" href="/" aria-label="答辩速查首页"><span class="brand-icon"><svg class="icon"><use href="#i-chat"/></svg></span><span>答辩速查<small>DEFENSE DESK</small></span></a>
+    <div class="sidebar-label">工作台</div>
+    <nav aria-label="主导航">
+      <button class="nav-item active" data-view="answers" aria-label="答案检索" title="答案检索"><svg class="icon"><use href="#i-search"/></svg><span>答案检索</span><span class="nav-count" id="navAnswerCount">0</span></button>
+      <button class="nav-item" data-view="sources" aria-label="原文检索" title="原文检索"><svg class="icon"><use href="#i-book"/></svg><span>原文检索</span></button>
+      <button class="nav-item" data-view="documents" aria-label="资料管理" title="资料管理"><svg class="icon"><use href="#i-folder"/></svg><span>资料管理</span><span class="nav-count" id="navDocumentCount">0</span></button>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <button class="nav-item" id="favoritesNav" aria-label="我的收藏" title="我的收藏"><svg class="icon"><use href="#i-star"/></svg><span>我的收藏</span><span class="nav-count" id="favoriteCount">0</span></button>
+    <div class="sidebar-note"><span class="note-eyebrow">让回答有据可查</span><p>提前准备，从容答辩。<br>搜索答案，随时核对出处。</p><svg class="note-book icon"><use href="#i-book"/></svg></div>
+    <div class="sidebar-footer"><span class="offline-dot"></span><div><span id="providerSidebarTitle">回答模型</span><small id="providerSidebarNote">资料检索与语音在本机处理</small></div></div>
+  </aside>
+
+  <main class="main-shell">
+    <header class="topbar"><button class="icon-button sidebar-toggle" id="sidebarToggle" aria-label="收起侧栏" title="收起侧栏" aria-expanded="true" aria-controls="mainSidebar"><svg class="icon"><use href="#i-chevron"/></svg></button><div class="breadcrumb">工作台 <span>/</span> <strong id="breadcrumbCurrent">答案检索</strong></div><div class="topbar-actions"><span id="connectionStatus" class="connection"><span class="status-dot"></span>连接中</span><button class="icon-button" id="fontToggle" aria-label="切换大字体" title="切换大字体">A<span class="tiny-plus">+</span></button><button class="icon-button" id="readingToggle" aria-label="切换专注阅读" title="专注阅读"><svg class="icon"><use href="#i-expand"/></svg></button></div></header>
+
+    <section class="workspace" id="searchView">
+      <div class="page-heading defense-page-heading"><div><h1 id="searchTitle">现场答辩辅助</h1><p id="searchSubtitle">先给本地开场回答，完整口述稿随后显示。</p></div><div class="heading-actions"><span class="version-label">2.2.2</span><button class="button secondary small" id="importFromSearch">导入资料</button><button class="button secondary small" id="addAnswer">新建答案</button></div></div>
+      <div class="composer-dock" id="composerDock">
+        <div class="voice-bar" id="voicePanel" data-phase="idle">
+          <div class="composer-primary search-box"><svg class="icon"><use href="#i-search"/></svg><input id="searchInput" type="search" placeholder="输入问题或追问，Enter 发送" autocomplete="off" aria-label="搜索关键词"><button class="clear-search" id="clearSearch" hidden aria-label="清空搜索"><svg class="icon"><use href="#i-close"/></svg></button><button type="button" class="button secondary voice-button" id="voiceButton" disabled><svg class="icon"><use href="#i-mic"/></svg><span id="voiceButtonLabel">语音提问</span></button><button type="button" class="text-button" id="voiceCancel" hidden>取消</button><span class="voice-recording" id="voiceRecording" hidden><span class="record-dot"></span><span id="voiceTimer">00:00</span><span class="voice-meter" aria-label="麦克风音量"><span id="voiceLevel"></span></span></span><button class="button secondary small" id="generationStop" type="button" hidden>停止</button><button class="button primary" id="generateAnswer" type="button">发送问题</button></div>
+          <div class="generation-controls" id="generationControls"><label class="generation-toggle"><input type="checkbox" id="generationEnabled" checked>生成回答</label><label class="generation-provider">回答方式<select id="generationProvider" aria-label="回答方式" disabled><option value="local">本地模型</option><option value="api">GPT API</option></select></label><button class="button secondary small" id="providerSettingsOpen" type="button">连接设置</button><span class="generation-model-status" id="generationModelStatus" role="status">正在读取模型…</span><details class="composer-options" id="composerOptions"><summary>更多选项</summary><div class="composer-options-body"><label class="voice-auto"><input type="checkbox" id="voiceAutoStop" autocomplete="off">停顿后自动发送</label><button type="button" class="text-button" id="voiceFileButton" disabled>识别录音文件</button><input type="file" id="voiceFileInput" accept=".wav,audio/wav,audio/x-wav" hidden><p class="voice-privacy">点击语音按钮才开启麦克风 · 语音在本机识别，不保存录音 · 最长3分钟</p><p class="provider-notice" id="providerNotice" role="status">正在读取回答方式…</p></div></details></div>
+          <p class="voice-message" id="voiceMessage" role="status" aria-live="polite">输入或说出专家的问题；对话自动保存在本机。</p>
+        </div>
+      </div>
+      <section class="conversation-workspace" id="generationCard" aria-label="答辩对话" data-phase="idle">
+        <div class="conversation-toolbar"><span id="conversationCount">现场答辩辅助模式</span><div class="generation-actions"><button class="button secondary small" id="generationAgain" type="button" disabled>重答选中问题</button><button class="button secondary small" id="generationCopy" type="button" disabled>复制口述稿</button><button class="text-button" id="clearConversation" type="button" disabled>清空对话</button></div></div>
+        <p class="generation-progress" id="generationProgress" role="status" aria-live="polite"></p>
+        <div class="conversation-layout"><div class="conversation-main"><div class="generation-empty" id="generationEmpty"><strong>输入专家的问题，开始这一轮答辩。</strong><p>先从本地资料提炼可开口的短回答，完整口述稿随后显示。历史问答自动保留，只有点击“清空对话”才会删除。</p></div><div id="conversationFeed" class="conversation-feed" aria-label="对话记录"></div></div><aside class="question-summary" id="questionSummary"><div class="question-summary-heading"><h3 id="questionSummaryTitle">问题提要</h3><button type="button" id="questionSummaryToggle" aria-expanded="false" aria-controls="questionSummaryList">展开</button></div><ol id="questionSummaryList"></ol><p>点击提要定位回答</p></aside></div>
+      </section>
+      <details class="reference-panel" id="referencePanel"><summary id="referenceSummary"><span>查看已有答案与原文</span><span class="reference-summary-note">保留准备好的回答及出处</span></summary><div class="filter-bar"><div class="filter-group" id="answerFilters"><label class="filter-select"><span>分类</span><select id="categoryFilter" aria-label="答案分类"><option value="">全部分类</option></select></label><label class="filter-select"><span>状态</span><select id="statusFilter" aria-label="审核状态"><option value="all">全部答案</option><option value="reviewed">已审核</option><option value="reference">参考答案</option><option value="draft">草稿</option></select></label><button class="filter-pill" id="favoriteFilter" aria-pressed="false"><svg class="icon"><use href="#i-star"/></svg>仅收藏</button></div><div class="search-hint" id="searchHint"><span class="small-dot"></span>搜索预设答案，不等待生成</div></div><div class="results-toolbar"><div><strong id="resultLabel">全部答案</strong><span id="resultCount" class="muted">0 条</span></div><span class="timing" id="searchTiming">本地检索</span></div><div class="search-layout" id="searchLayout"><section class="result-list" id="resultList" aria-label="搜索结果" aria-live="polite"></section><article class="answer-detail" id="answerDetail" aria-label="答案详情"></article></div></details>
+    </section>
+
+    <section class="workspace" id="documentsView" hidden>
+      <div class="page-heading"><div><div class="eyebrow">A WELL-PREPARED DEFENSE</div><h1>资料与答案库</h1><p>把材料收好，把答案准备好。所有内容保存在这台电脑上。</p></div><div class="heading-actions"><details class="export-menu"><summary class="button secondary"><svg class="icon"><use href="#i-download"/></svg>导出答案</summary><div class="dropdown"><a href="/api/export?format=xlsx">Excel 格式</a><a href="/api/export?format=json">JSON 格式（含来源）</a></div></details><button class="button primary" id="importFromDocs"><svg class="icon"><use href="#i-plus"/></svg>导入资料</button></div></div>
+      <div class="stats-grid"><div class="stat-card"><span class="stat-label">答案总数</span><strong id="statAnswers">0</strong><span class="stat-note">可搜索的答辩卡片</span></div><div class="stat-card"><span class="stat-label">已审核答案</span><strong id="statReviewed">0</strong><span class="stat-note">经你确认的回答口径</span></div><div class="stat-card"><span class="stat-label">来源文件</span><strong id="statDocuments">0</strong><span class="stat-note">Word、PDF 与导入资料</span></div><div class="stat-card"><span class="stat-label">原文片段</span><strong id="statChunks">0</strong><span class="stat-note">可搜索、可回看出处</span></div></div>
+      <div class="prep-banner"><span class="prep-icon"><svg class="icon"><use href="#i-chat"/></svg></span><div><strong>用熟悉的 Excel 整理答案</strong><p>一行一个问题，补充简短回答、关键词和出处，导入后即可检索。</p></div><a class="button secondary" href="/api/template?format=xlsx"><svg class="icon"><use href="#i-download"/></svg>下载答案模板</a></div>
+      <div class="document-heading"><h2>已导入资料</h2><button class="text-button" id="refreshDocuments">刷新列表</button></div>
+      <div class="document-selection-bar" role="group" aria-label="资料批量选择">
+        <label class="document-select-all"><input type="checkbox" id="selectAllDocuments" disabled>全选当前文件</label>
+        <span id="documentSelectionCount" aria-live="polite">已选 0 / 0 份</span>
+        <button type="button" class="text-button" id="clearDocumentSelection" disabled>取消选择</button>
+        <button type="button" class="button secondary small document-delete-selected" id="deleteSelectedDocuments" disabled>删除选中文件</button>
+      </div>
+      <p id="documentActionStatus" class="document-action-status" role="status" aria-live="polite" hidden></p>
+      <div id="documentList" class="document-list"></div>
+      <p class="fine-print">导入的参考内容不会自动标记为“已审核”。重要数据、单位和适用条件，请结合出处确认。</p>
+    </section>
+    <footer class="workspace-footer"><span>答辩速查 2.2.2 · 现场答辩辅助</span><span><kbd>Ctrl K</kbd> 搜索 <span class="footer-sep">·</span> <kbd>Alt ↑ / ↓</kbd> 切换结果</span></footer>
+  </main>
+
+  <dialog id="providerSettingsDialog" class="modal provider-modal" aria-labelledby="providerSettingsTitle">
+    <form id="providerSettingsForm">
+      <div class="modal-header"><div><span class="eyebrow">ANSWER MODEL</span><h2 id="providerSettingsTitle">回答模型与连接</h2></div><button class="icon-button" type="button" data-close="providerSettingsDialog" aria-label="关闭连接设置"><svg class="icon"><use href="#i-close"/></svg></button></div>
+      <div class="modal-body">
+        <p class="provider-intro">先显示本地资料开场回答，再由所选模型生成完整口述稿与依据。模型可自由填写，以下名称仅为快捷建议。</p>
+        <fieldset id="providerSettingsFields">
+          <label class="field">使用方式<select id="providerMode"><option value="local">本地模型 · 在本机生成</option><option value="api">GPT API · 通过已配置服务生成</option></select></label>
+          <label class="field">API 地址<input id="providerBaseUrl" type="url" maxlength="500" autocomplete="off" spellcheck="false" placeholder="https://api.openai.com/v1"><small>填写服务提供的基础地址；兼容服务通常也使用 /v1。</small></label>
+          <div class="form-grid">
+            <label class="field">接口格式<select id="providerApiFormat"><option value="responses">Responses · OpenAI 官方推荐</option><option value="chat_completions">Chat Completions · 兼容服务常用</option></select></label>
+            <div class="field"><label for="providerModelPreset">常用模型</label><select id="providerModelPreset"><option value="">手动填写其他模型</option><option value="gpt-6.1-sol">gpt-6.1-sol</option><option value="gpt-6-astra">gpt-6-astra</option><option value="gpt-6.1-terra">gpt-6.1-terra</option><option value="gpt-5.6-luna">gpt-5.6-luna</option></select><label for="providerModel">模型名称</label><input id="providerModel" maxlength="120" autocomplete="off" spellcheck="false" placeholder="填写服务实际支持的模型名"><small>可从上方直接选择，也可手动填写；点击“保存并使用”后生效。</small></div>
+          </div>
+          <label class="field">API Key<input id="providerApiKey" type="password" maxlength="512" autocomplete="new-password" spellcheck="false" placeholder="填写您的 API Key"><small id="providerKeyState">尚未配置密钥。</small></label>
+          <div class="provider-key-options"><label><input id="providerRememberKey" type="checkbox" checked>记住密钥（仅当前 Windows 用户可解密）</label><label id="providerClearKeyLabel" hidden><input id="providerClearKey" type="checkbox">保存时删除已有密钥</label></div>
+          <details class="provider-advanced"><summary>更多选项</summary><label class="field">思考强度<select id="providerReasoning"><option value="default">由模型默认决定</option><option value="none">不启用思考（需模型支持）</option><option value="low">低 · 较快响应</option><option value="medium">中 · 兼顾分析与速度</option><option value="high">高 · 适合复杂问题，耗时更长</option></select><small>不支持此参数的模型请选择默认。模型是否可用取决于您的 API 服务。</small></label><label class="provider-proxy"><input id="providerUseProxy" type="checkbox">使用系统代理（需要时开启）</label></details>
+        </fieldset>
+        <p class="provider-transfer-note" id="providerTransferNote">API 模式将发送当前问题、相关对话与资料片段，并按服务计费；原始文件仍保存在本机。</p>
+        <p class="provider-test-note">“测试连接”只发送固定的通用短句，不使用项目资料；测试也可能产生少量 API 费用。</p>
+        <p id="providerSettingsMessage" class="provider-settings-message" role="status" aria-live="polite"></p>
+      </div>
+      <div class="modal-footer provider-settings-footer"><button class="button secondary" type="button" id="providerTest">测试连接</button><div><button class="button secondary" type="button" data-close="providerSettingsDialog">取消</button><button class="button primary" type="submit" id="providerSave">保存并使用</button></div></div>
+    </form>
+  </dialog>
+
+  <dialog id="editorDialog" class="modal editor-modal"><form id="answerForm"><div class="modal-header"><div><span class="eyebrow">ANSWER CARD</span><h2 id="editorTitle">新建答案</h2></div><button class="icon-button" type="button" data-close="editorDialog" aria-label="关闭编辑器"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><label class="field">问题标题 <span class="required">*</span><input id="editQuestion" required maxlength="500" placeholder="例如：项目的核心创新点是什么？"></label><div class="form-grid"><label class="field">分类<input id="editCategory" list="categoryOptions" placeholder="例如：技术创新"><datalist id="categoryOptions"></datalist></label><label class="field">答案状态<select id="editStatus"><option value="draft">草稿</option><option value="reference">参考答案</option><option value="reviewed">已审核</option></select></label></div><label class="field">简短回答<textarea id="editShort" rows="3" placeholder="适合现场快速阅读的核心结论"></textarea></label><label class="field">详细回答 <span class="required">*</span><textarea id="editAnswer" rows="7" required placeholder="补充论据、数据、适用条件以及可能的追问"></textarea></label><div class="form-grid"><label class="field">关键词<input id="editKeywords" placeholder="创新点，技术优势，对比"><small>用逗号或分号分隔</small></label><label class="field">其他问法<textarea id="editAliases" rows="2" placeholder="新在哪里？&#10;比现有技术好在哪里？"></textarea><small>每行一种问法</small></label></div><div class="source-editor-heading"><h3>原文出处</h3><button type="button" class="text-button" id="addSourceField">＋ 添加出处</button></div><div id="sourceFields"></div><p class="inline-error" id="editorError" hidden></p></div><div class="modal-footer"><button class="button secondary" type="button" data-close="editorDialog">取消</button><button class="button primary" type="submit" id="saveAnswer">保存答案</button></div></form></dialog>
+
+  <dialog id="importDialog" class="modal import-modal"><div class="modal-header"><div><span class="eyebrow">BUILD YOUR KNOWLEDGE BASE</span><h2>导入资料</h2></div><button class="icon-button" data-close="importDialog" aria-label="关闭导入窗口"><svg class="icon"><use href="#i-close"/></svg></button></div><div class="modal-body"><label class="field">导入方式<select id="importKind"><option value="auto">自动识别 · 提取问答并保留原文</option><option value="answers">答案库 · 导入预设问答</option><option value="sources">原始资料 · 仅建立原文索引</option></select></label><div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="选择或拖入文件"><span class="upload-illustration"><svg class="icon"><use href="#i-upload"/></svg></span><strong>拖入文件，或点击选择</strong><p>Word (.docx) · PDF · Excel (.xlsx) · JSON · TXT · Markdown</p><small>支持多选，每个文件不超过 60 MB；扫描 PDF 需先进行文字识别</small></div><input type="file" id="fileInput" hidden multiple accept=".docx,.pdf,.xlsx,.json,.txt,.md"><div class="import-results" id="importResults" aria-live="polite"></div><p class="fine-print">导入与索引在本机完成。选择 GPT API 生成回答时，相关资料片段会发送到已配置的服务。</p></div><div class="modal-footer"><a class="text-button" href="/api/template?format=xlsx">下载 Excel 答案模板</a><button class="button primary" data-close="importDialog" id="importDone">完成</button></div></dialog>
+
+  <dialog id="sourceDialog" class="modal source-modal"><div class="modal-header"><div><span class="eyebrow">ORIGINAL SOURCE</span><h2 id="sourceTitle">查看原文</h2></div><div class="heading-actions"><a class="button secondary small" id="sourceOpen" target="_blank" rel="noopener"><svg class="icon"><use href="#i-external"/></svg>打开文件</a><button class="icon-button" data-close="sourceDialog" aria-label="关闭原文"><svg class="icon"><use href="#i-close"/></svg></button></div></div><div class="source-preview" id="sourcePreview"></div></dialog>
+  <div id="toastRegion" class="toast-region" role="status" aria-live="polite"></div>
+</body>
+</html>
+
+
+

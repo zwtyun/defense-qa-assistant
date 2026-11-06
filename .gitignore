@@ -1,0 +1,42 @@
+# Local environments and generated output
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+build_release/
+dist/
+发布包/
+归档/
+*.spec
+# User documents, chat, credentials and logs
+data/
+logs/
+*.sqlite3*
+*.db
+*.log
+.env
+.env.*
+generation-settings.json
+# Generated root-level reports, screenshots and ad-hoc imported material
+/*.json
+/*.png
+/*.jpg
+/*.pdf
+/*.docx
+/*.xlsx
+/*验证*.txt
+/*复测*.txt
+/*报告*.txt
+# Binary distributions and downloaded model weights
+_internal/
+models/
+runtime/
+*.exe
+*.dll
+*.pyd
+*.gguf
+*.onnx
+*.zip
+*.7z
+*.part[0-9]*

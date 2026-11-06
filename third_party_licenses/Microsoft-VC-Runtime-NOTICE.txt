@@ -1,0 +1,16 @@
+Microsoft Visual C++ Runtime — Application-local dependencies
+
+This distribution includes unmodified x64 Microsoft runtime components:
+msvcp140.dll, concrt140.dll, vcruntime140.dll, vcruntime140_1.dll.
+Copyright Microsoft Corporation. These components retain their Microsoft digital signatures.
+They are placed in the application's dependency directories, not installed into Windows system directories.
+
+The DLLs are Microsoft components, not project code and not covered by any proposed project open-source license.
+The publisher must comply with the Microsoft license terms and redistribution rights applicable to the publisher's licensed tools and these runtime files. This packaging helper does not grant additional redistribution rights or accept an agreement on the publisher's behalf.
+
+Microsoft deployment and redistribution information:
+https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files
+https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist/
+https://learn.microsoft.com/en-us/visualstudio/releases/2026/redistribution
+
+When building a new release, use compatible, unmodified x64 runtime files from an appropriately licensed redistribution source. --vc-runtime-dir can select the appropriate Microsoft redistributable directory. The current development machine's System32 directory is the helper's default source, not a universal permission to redistribute arbitrary Windows files.
