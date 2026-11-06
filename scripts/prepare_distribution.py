@@ -96,7 +96,7 @@ def render_doc(name, destination):
 def stage_source(output):
     target = output / "GitHub源码"
     target.mkdir()
-    for relative in CORE + ("requirements.txt", "requirements-dev.txt", "启动答辩速查.bat"):
+    for relative in CORE + ("LICENSE", "requirements.txt", "requirements-dev.txt", "启动答辩速查.bat"):
         copy_file(relative, target)
     copy_tree(ROOT / "static", target / "static")
     for source in (ROOT / "tests").iterdir():
@@ -116,7 +116,7 @@ def stage_source(output):
 def stage_portable(output, vc_runtime_dir):
     target = output / PORTABLE_NAME
     target.mkdir()
-    for name in ("答辩速查.exe", "启动答辩速查.bat", "使用说明.txt"):
+    for name in ("答辩速查.exe", "启动答辩速查.bat", "使用说明.txt", "LICENSE"):
         copy_file(name, target)
     for name in ("_internal", "models/answer-model", "models/sensevoice"):
         copy_tree(ROOT / name, target / name)
