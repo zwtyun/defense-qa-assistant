@@ -198,11 +198,11 @@ try {
 Write-Host ('已合并：' + $target)
 Write-Host '接下来完整解压ZIP，再双击答辩速查.exe。保留所有程序配套目录。'
 """ % (rows, quoted_name)
-    (target / "合并便携压缩包.ps1").write_text(script, encoding="utf-8-sig")
-    (target / "合并便携压缩包.bat").write_text(
-        '@echo off\r\nchcp 65001 >nul\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0合并便携压缩包.ps1"\r\npause\r\n', encoding="utf-8")
-    (target / "分卷说明.txt").write_text(
-        "将全部part分卷和合并脚本放在同一目录，双击合并便携压缩包.bat。\n"
+    (target / "Merge-Portable.ps1").write_text(script, encoding="utf-8-sig")
+    (target / "Merge-Portable.bat").write_text(
+        '@echo off\r\nchcp 65001 >nul\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Merge-Portable.ps1"\r\npause\r\n', encoding="utf-8")
+    (target / "SPLIT-README.txt").write_text(
+        "将全部part分卷和合并脚本放在同一目录，双击Merge-Portable.bat。\n"
         "合并得到普通ZIP后再完整解压；不在ZIP内部启动程序。\n"
         "已有同名ZIP时合并会停止，不覆盖已有文件；需要重试时先自行移走旧ZIP。\n"
         "分卷与完整ZIP是同一份压缩包的不同传输形式，选一种发送即可。\n", encoding="utf-8")

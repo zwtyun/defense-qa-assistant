@@ -68,7 +68,7 @@ git push -u origin main
 .\.venv\Scripts\python.exe scripts/prepare_distribution.py --split-zip "<便携ZIP完整路径>" --part-size-mib 1536
 ```
 
-分卷输出到 ZIP 相邻的 `<ZIP文件名不含扩展>-github-parts` 目录，其中包含 `.part001`、`.part002` 等文件以及 `合并便携压缩包.bat`、`合并便携压缩包.ps1`。将所有分卷与两个合并脚本一起作为同一版本的 Release 资产上传。
+分卷输出到 ZIP 相邻的 `<ZIP文件名不含扩展>-github-parts` 目录，其中包含 `.part001`、`.part002` 等文件以及 `Merge-Portable.bat`、`Merge-Portable.ps1`。将所有分卷与两个合并脚本一起作为同一版本的 Release 资产上传。
 
 分卷是原 ZIP 的字节切片，不是每卷独立可解压的压缩包。接收者下载全部文件后，用 Windows 自带 PowerShell 的配套脚本流式合并为原 ZIP，再完整解压使用。
 

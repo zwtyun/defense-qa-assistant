@@ -10,11 +10,11 @@
 
 - `DefenseDesk-2.2.2-Windows-x64.zip.part001`
 - `DefenseDesk-2.2.2-Windows-x64.zip.part002`
-- `合并便携压缩包.bat`
-- `合并便携压缩包.ps1`
-- `分卷说明.txt`
+- `Merge-Portable.bat`
+- `Merge-Portable.ps1`
+- `SPLIT-README.txt`
 
-双击 `合并便携压缩包.bat`，合并得到 `DefenseDesk-2.2.2-Windows-x64.zip`。完整解压 ZIP 后，双击 `答辩速查.exe` 或 `启动答辩速查.bat`。便携包已含运行依赖、本地问答模型和语音模型，无需安装 Python。
+双击 `Merge-Portable.bat`，合并得到 `DefenseDesk-2.2.2-Windows-x64.zip`。完整解压 ZIP 后，双击 `答辩速查.exe` 或 `启动答辩速查.bat`。便携包已含运行依赖、本地问答模型和语音模型，无需安装 Python。
 
 GitHub 自动生成的 `Source code (zip)` 以及 `DefenseDesk-2.2.2-source.zip` 是源码，不是可直接运行的 Windows 便携包。
 
